@@ -105,7 +105,7 @@ use openapi_v3::{
     AnyOfGetResponse,
     CallbackWithHeaderPostResponse,
     ComplexQueryParamGetResponse,
-    EnumInPathPathParamGetResponse,
+    GetWithBooleanParameterResponse,
     JsonComplexQueryParamGetResponse,
     MandatoryRequestHeaderGetResponse,
     MergePatchJsonGetResponse,
@@ -119,6 +119,7 @@ use openapi_v3::{
     RequiredOctetStreamPutResponse,
     ResponsesWithHeadersGetResponse,
     Rfc7807GetResponse,
+    TwoFirstLetterHeadersResponse,
     UntypedPropertyGetResponse,
     UuidGetResponse,
     XmlExtraPostResponse,
@@ -126,6 +127,8 @@ use openapi_v3::{
     XmlOtherPutResponse,
     XmlPostResponse,
     XmlPutResponse,
+    EnumInPathPathParamGetResponse,
+    MultiplePathParamsWithVeryLongPathToTestFormattingPathParamAPathParamBGetResponse,
     CreateRepoResponse,
     GetRepoInfoResponse,
 };
@@ -163,12 +166,12 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
         Err(ApiError("Api-Error: Operation is NOT implemented".into()))
     }
 
-    async fn enum_in_path_path_param_get(
+    async fn get_with_boolean_parameter(
         &self,
-        path_param: models::StringEnum,
-        context: &C) -> Result<EnumInPathPathParamGetResponse, ApiError>
+        iambool: bool,
+        context: &C) -> Result<GetWithBooleanParameterResponse, ApiError>
     {
-        info!("enum_in_path_path_param_get({:?}) - X-Span-ID: {:?}", path_param, context.get().0.clone());
+        info!("get_with_boolean_parameter({}) - X-Span-ID: {:?}", iambool, context.get().0.clone());
         Err(ApiError("Api-Error: Operation is NOT implemented".into()))
     }
 
@@ -285,6 +288,16 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
         Err(ApiError("Api-Error: Operation is NOT implemented".into()))
     }
 
+    async fn two_first_letter_headers(
+        &self,
+        x_header_one: Option<bool>,
+        x_header_two: Option<bool>,
+        context: &C) -> Result<TwoFirstLetterHeadersResponse, ApiError>
+    {
+        info!("two_first_letter_headers({:?}, {:?}) - X-Span-ID: {:?}", x_header_one, x_header_two, context.get().0.clone());
+        Err(ApiError("Api-Error: Operation is NOT implemented".into()))
+    }
+
     async fn untyped_property_get(
         &self,
         object_untyped_props: Option<models::ObjectUntypedProps>,
@@ -329,7 +342,7 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
         Err(ApiError("Api-Error: Operation is NOT implemented".into()))
     }
 
-    /// Post an array
+    /// Post an array.  It's important we test apostrophes, so include one here.
     async fn xml_post(
         &self,
         xml_array: Option<models::XmlArray>,
@@ -345,6 +358,25 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
         context: &C) -> Result<XmlPutResponse, ApiError>
     {
         info!("xml_put({:?}) - X-Span-ID: {:?}", xml_object, context.get().0.clone());
+        Err(ApiError("Api-Error: Operation is NOT implemented".into()))
+    }
+
+    async fn enum_in_path_path_param_get(
+        &self,
+        path_param: models::StringEnum,
+        context: &C) -> Result<EnumInPathPathParamGetResponse, ApiError>
+    {
+        info!("enum_in_path_path_param_get({:?}) - X-Span-ID: {:?}", path_param, context.get().0.clone());
+        Err(ApiError("Api-Error: Operation is NOT implemented".into()))
+    }
+
+    async fn multiple_path_params_with_very_long_path_to_test_formatting_path_param_a_path_param_b_get(
+        &self,
+        path_param_a: String,
+        path_param_b: String,
+        context: &C) -> Result<MultiplePathParamsWithVeryLongPathToTestFormattingPathParamAPathParamBGetResponse, ApiError>
+    {
+        info!("multiple_path_params_with_very_long_path_to_test_formatting_path_param_a_path_param_b_get(\"{}\", \"{}\") - X-Span-ID: {:?}", path_param_a, path_param_b, context.get().0.clone());
         Err(ApiError("Api-Error: Operation is NOT implemented".into()))
     }
 
